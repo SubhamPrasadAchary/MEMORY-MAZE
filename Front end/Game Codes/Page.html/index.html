@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Memory Maze - A challenging memory game where you need to memorize and follow a path through a maze">
+    <meta name="theme-color" content="#4f46e5">
+    <title>Memory Maze - Path Memory Challenge</title>
+    <link rel="stylesheet" href="../CSS file.css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <style>
+    .modal {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        color: #333;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h2 {
+        margin-bottom: 1rem;
+        color: #6a11cb;
+    }
+
+    .modal-content input {
+        width: 100%;
+        padding: 0.7rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .modal-content button {
+        width: 100%;
+        padding: 0.7rem;
+        border: none;
+        border-radius: 10px;
+        background-color: #6a11cb;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .logo {
+    width: 70px;
+   height: 70px;
+   display: block;
+   margin: 0 auto 20px;
+    }
+
+    </style>
+</head>
+<body>
+    <!-- Splash screen -->
+    <div id="splashScreen" style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(to right, #6a11cb, #2575fc);">
+    <h1 id="splashTitle" style="font-size: 4rem; color: white; text-shadow: 2px 2px #000;">Memory Maze</h1>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+<img src="../assets/maze.png" class="logo" />
+            <h2>Welcome to Memory Maze!</h2>
+            <input type="text" id="username" placeholder="Enter your name" />
+            <button onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+    <div id="gameContent" style="display: none;">
+<div class="main-wrapper">
+<div class="game-layout">
+  <!-- LEFT SIDE -->
+<div class="left-panel">
+  <!-- FIRST PANEL -->
+  <div class="panel panel-top">
+    <h2 class="game-title">Memory Maze</h2>
+    <div class="game-controls">
+      <button id="startButton" class="btn primary"><i class="fas fa-play"></i> Start</button>
+      <button id="soundButton" class="btn secondary"><i class="fas fa-volume-up"></i></button>
+      <button id="themeButton" class="btn secondary"><i class="fas fa-paint-brush"></i></button>
+      <button id="tutorialButton" class="btn secondary"><i class="fas fa-question-circle"></i></button>
+      <button id="retryButton" class="btn secondary"><i class="fas fa-redo"></i></button>
+      <button id="leaderboardButton" class="btn secondary"><i class="fas fa-trophy"></i> Leaderboard</button>
+      <button onclick="logoutUser()" class="btn secondary">Logout</button>
+    </div>
+  </div>
+
+  <!-- SECOND PANEL -->
+  <div class="panel panel-bottom">
+    <div class="stat-grid">
+      <div class="stat-item"><span class="stat-label">Score</span><span class="stat-value" id="score">0</span></div>
+      <div class="stat-item"><span class="stat-label">High Score</span><span class="stat-value" id="highScore">0</span></div>
+      <div class="stat-item"><span class="stat-label">Path Length</span><span class="stat-value" id="pathLength">0</span></div>
+      <div class="stat-item"><span class="stat-label">Time</span><span class="stat-value" id="gameTimer">0:00</span></div>
+      <div class="stat-item"><span class="stat-label">Moves</span><span class="stat-value" id="moves">0</span></div>
+      <div class="stat-item"><span class="stat-label">Level</span><span class="stat-value" id="level">1</span></div>
+    </div>
+  </div>
+
+  <!-- ✅ THIRD PANEL (Power-up Buttons) -->
+  <div class="panel panel-buttons">
+    <div class="powerup-panel">
+      <button id="showPathButton" class="btn secondary"><i class="fas fa-eye"></i> Show Path</button>
+      <button id="genieButton" class="btn secondary"><i class="fas fa-magic"></i> Genie Hint</button>
+      <button id="timeBonusButton" class="btn secondary"><i class="fas fa-clock"></i> +10s</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- RIGHT SIDE -->
+  <div class="right-panel">
+    <div id="maze" class="maze-container"></div>
+  </div>
+</div>
+</div>
+
+        <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+        <div class="loading-spinner" id="loadingSpinner"></div>
+
+        <!-- Theme Modal -->
+        <div id="themeModal" class="modal">
+            <div class="modal-content">
+                <h2>Choose Theme</h2>
+                <div class="theme-options">
+                    <button class="theme-option" data-theme="light">
+                        <i class="fas fa-sun"></i> Light
+                    </button>
+                    <button class="theme-option" data-theme="dark">
+                        <i class="fas fa-moon"></i> Dark
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Tutorial Modal -->
+        <div id="tutorialModal" class="modal theme-sensitive">
+            <div class="modal-content">
+                <span class="close-button" id="closeTutorial">&times;</span>
+                <h2>How to Play</h2>
+                <div class="tutorial-steps">
+                    <div class="step">
+                        <h3>Step 1: Choose Difficulty</h3>
+                        <p>Select your preferred difficulty level (Easy, Medium, or Hard).</p>
+                    </div>
+                    <div class="step">
+                        <h3>Step 2: Start Game</h3>
+                        <p>Click the "Start New Game" button to begin.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Step 3: Follow the Path</h3>
+                        <p>Memorize the path shown and follow it by clicking on the correct sequence of cells.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Step 4: Use Hints</h3>
+                        <p>If you get stuck, use the "Show Path" button to see the correct path.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="leaderboardModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>🏆 Leaderboard</h2>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+            <th>Player</th>
+            <th>Level</th>
+            <th>Time (s)</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboardTableBody">
+            <!-- Dynamically filled -->
+        </tbody>
+        </table>
+        <button onclick="document.getElementById('leaderboardModal').style.display='none'" class="btn close-btn">
+            <i class="fas fa-times"></i> Close
+        </button>
+    </div>
+    </div>
+    <audio id="clickSound" src="sounds/click.mp3"></audio>
+    <audio id="successSound" src="sounds/success.mp3"></audio>
+    <audio id="errorSound" src="sounds/error.mp3"></audio>
+    <script src="../Js file/Game.js"></script>
+
+<script>
+    const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  document.documentElement.className = savedTheme;
+} 
+  function startGame() {
+    const usernameInput = document.getElementById('username');
+    const username = usernameInput.value.trim();
+
+    if (!username) {
+      alert("Please enter your name!");
+      return;
+    }
+
+    localStorage.setItem("memoryMazeUsername", username);
+    document.getElementById('loginModal').style.display = "none";
+    document.getElementById('gameContent').style.display = "block";
+  }
+
+  function logoutUser() {
+    localStorage.removeItem("memoryMazeUsername");
+    location.reload();
+  }
+
+  function openLeaderboard() {
+    document.getElementById("leaderboardModal").style.display = "block";
+  }
+
+  function closeLeaderboard() {
+    document.getElementById("leaderboardModal").style.display = "none";
+  }
+
+window.onload = () => {
+  const splash = document.getElementById("splashScreen");
+  const loginModal = document.getElementById("loginModal");
+  const gameContent = document.getElementById("gameContent");
+  const tutorialModal = document.getElementById("tutorialModal"); // <-- Add this
+  const storedName = localStorage.getItem("memoryMazeUsername");
+
+  // Hide all modals at start
+  splash.style.display = "flex";
+  loginModal.style.display = "none";
+  gameContent.style.display = "none";
+  tutorialModal.style.display = "none"; // <-- Ensure tutorial modal is hidden
+
+  setTimeout(() => {
+    splash.style.display = "none";
+
+    if (storedName) {
+      loginModal.style.display = "none";
+      gameContent.style.display = "block";
+    } else {
+      loginModal.style.display = "flex";
+    }
+  }, 2500);
+};
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tutorialModal = document.getElementById("tutorialModal");
+    const tutorialButton = document.getElementById("tutorialButton");
+    const closeTutorial = document.getElementById("closeTutorial");
+
+    tutorialButton.addEventListener("click", () => {
+      tutorialModal.style.display = "flex";
+    });
+
+    closeTutorial.addEventListener("click", () => {
+      tutorialModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === tutorialModal) {
+        tutorialModal.style.display = "none";
+      }
+    });
+  });
+
+</script>
+</div>
+<div id="confetti-container"></div>
+</body>
+</html>
