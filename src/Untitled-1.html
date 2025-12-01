@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subham Prasad Achary - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+        }
+        
+        .sidebar {
+            background: #f8f4f0;
+            padding: 30px 20px;
+            border-right: 3px solid #8B4513;
+        }
+        
+        .main {
+            padding: 30px;
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 30px;
+            border-bottom: 3px solid #8B4513;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            background: #ddd;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        
+        .header-content h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .header-content p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        h2 {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #8B4513;
+            text-transform: uppercase;
+        }
+        
+        .contact-item {
+            font-size: 13px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .contact-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .contact-item a {
+            color: #8B4513;
+            text-decoration: none;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .skill-category {
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .skill-category strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #333;
+        }
+        
+        .list-item {
+            font-size: 12px;
+            margin-bottom: 6px;
+            padding-left: 15px;
+        }
+        
+        .experience-item {
+            margin-bottom: 25px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+        
+        .job-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .company {
+            font-weight: 600;
+            color: #8B4513;
+        }
+        
+        .job-dates {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .job-description {
+            font-size: 13px;
+            color: #333;
+            margin-top: 8px;
+        }
+        
+        .bullet-point {
+            margin-left: 20px;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        
+        .bullet-point:before {
+            content: "• ";
+            color: #8B4513;
+            font-weight: bold;
+        }
+        
+        .professional-summary {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .education-item {
+            margin-bottom: 15px;
+        }
+        
+        .degree {
+            font-weight: 700;
+            font-size: 13px;
+        }
+        
+        .school {
+            font-weight: 600;
+            color: #8B4513;
+            font-size: 13px;
+        }
+        
+        .edu-details {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .project-item {
+            margin-bottom: 15px;
+        }
+        
+        .project-title {
+            font-weight: 700;
+            font-size: 13px;
+        }
+        
+        .project-tech {
+            font-size: 12px;
+            color: #8B4513;
+            font-style: italic;
+            margin-top: 2px;
+        }
+        
+        .project-desc {
+            font-size: 13px;
+            color: #333;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="profile-img"></div>
+        <div class="header-content">
+            <h1>SUBHAM PRASAD ACHARY</h1>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <h2>CONTACT</h2>
+            <div class="contact-item">
+                <span class="contact-label">Location:</span><br>
+                South East Delhi, India 110015
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Mobile:</span><br>
+                +91 9717325304
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Email:</span><br>
+                <a href="mailto:acharysubham2803@gmail.com">acharysubham2803@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">LinkedIn:</span><br>
+                <a href="https://www.linkedin.com/in/subhamacharry">linkedin.com/in/subhamacharry</a>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">GitHub:</span><br>
+                <a href="https://github.com/SubhamAchary/">github.com/SubhamAchary/</a>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Portfolio:</span><br>
+                <a href="https://subhamachary.me/">subhamachary.me/</a>
+            </div>
+            
+            <h2>EDUCATION</h2>
+            <div class="education-item">
+                <div class="degree">B.Tech Computer Science<br>(IoT, Cybersecurity, Blockchain)</div>
+                <div class="school">Amity University, Noida, India</div>
+                <div class="edu-details">Expected: January 2026 | GPA: 7.28</div>
+            </div>
+            <div class="education-item">
+                <div class="degree">XII: CBSE</div>
+                <div class="school">Manava Bharti India International School, New Delhi</div>
+                <div class="edu-details">January 2021 | GPA: 86.8%</div>
+            </div>
+            <div class="education-item">
+                <div class="degree">X: CBSE</div>
+                <div class="school">Manava Bharti India International School, New Delhi</div>
+                <div class="edu-details">January 2019 | GPA: 78.5%</div>
+            </div>
+            
+            <h2>CERTIFICATES</h2>
+            <div class="list-item">AWS Web Development Summer Internship</div>
+            <div class="list-item">Cisco CCNA v7: Introduction to Networks</div>
+            <div class="list-item">NPTEL: Introduction to IoT</div>
+            <div class="list-item">NPTEL: Python for Data Science</div>
+            <div class="list-item">Amity Event Participation</div>
+            <div class="list-item">NCSHE Cybersecurity</div>
+            
+            <h2>INTERESTS</h2>
+            <div style="font-size: 12px; line-height: 1.6;">
+                Full Stack Development, Cloud Computing, System Design, Cybersecurity, Open-Source Development
+            </div>
+        </div>
+        
+        <div class="main">
+            <h2>PROFESSIONAL SUMMARY</h2>
+            <div class="professional-summary">
+                Results-driven Software Development Engineer with hands-on experience in designing and building scalable, high-performance applications across the full development lifecycle. Strong foundation in Data Structures, Algorithms, OOP, Operating Systems, DBMS, and Networking. Skilled in React.js, Node.js, Express.js, JavaScript, and MongoDB, with practical exposure to API engineering, microservices, and distributed system concepts. Experienced in SDLC, Agile/Scrum, Git-based version control, CI/CD pipelines, system optimization, cloud deployment, and performance debugging. Passionate about solving complex technical problems, writing clean and efficient code, improving system reliability, and contributing effectively to cross-functional teams.
+            </div>
+            
+            <h2>TECHNICAL SKILLS</h2>
+            <div class="skill-category">
+                <strong>Languages:</strong> C, Java, JavaScript, SQL, HTML5, CSS3
+            </div>
+            <div class="skill-category">
+                <strong>Databases:</strong> MongoDB, MySQL
+            </div>
+            <div class="skill-category">
+                <strong>Core CS Concepts:</strong> Data Structures, Algorithms, OOP, DBMS, OS, Networking
+            </div>
+            <div class="skill-category">
+                <strong>Frameworks/Libraries:</strong> React.js, Node.js, Express.js, Tailwind CSS, Next.js
+            </div>
+            <div class="skill-category">
+                <strong>Tools/Cloud:</strong> Git, GitHub, Linux, Postman, Vercel, Appwrite, CI/CD
+            </div>
+            <div class="skill-category">
+                <strong>Other Technical Skills:</strong> REST APIs, Debugging, Problem Solving, Version Control, API Development
+            </div>
+            
+            <h2>EXPERIENCE</h2>
+            
+            <div class="experience-item">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Intern</div>
+                        <div class="company">Jabsz Gaming Studios LLP</div>
+                        <div class="job-dates">May 2025 - July 2025 (Remote)</div>
+                    </div>
+                </div>
+                <div class="job-description">
+                    Developed optimized and scalable UI components using HTML5, CSS3, and JavaScript, improving game-play responsiveness by applying efficient rendering, event-driven programming, and performance optimization aligned with core DSA and system design principles. Developed and optimized backend modules for the Memory Maze Game, designing robust data-handling logic, scalable state-management, and efficient API request flows to enhance performance, reduce latency, and support seamless gameplay across the full stack.
+                </div>
+                <div class="bullet-point">Worked in Agile Scrum environment, participating in sprint planning, daily standups, code reviews, and cross-functional coordination.</div>
+                <div class="bullet-point">Applied full SDLC best practices, leveraging Git for version control, structured debugging workflows, and performance optimization techniques to improve code quality, maintainability, and overall system reliability.</div>
+            </div>
+            
+            <div class="experience-item">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Web Development Intern</div>
+                        <div class="company">JABSZ Gaming Studios</div>
+                        <div class="job-dates">May 2025 - July 2025</div>
+                    </div>
+                </div>
+                <div class="job-description">
+                    Developed optimized and scalable UI components using HTML5, CSS3, and JavaScript, improving game-play responsiveness by applying efficient rendering, event-driven programming, and performance optimization aligned with efficient rendering, event-driven programming, and performance optimization aligned with core DSA and system design principles. Developed and optimized backend modules for the Memory Maze Game, designing robust data-handling logic, scalable state-management, and efficient API request flows to enhance performance, reduce latency, and support seamless gameplay across the full stack.
+                </div>
+                <div class="bullet-point">Worked in Agile Scrum environment, participating in sprint planning, daily standups, code reviews, and cross-functional coordination.</div>
+                <div class="bullet-point">Applied full SDLC best practices, leveraging Git for version control, structured debugging workflows, and performance optimization techniques to improve code quality, maintainability, and overall system reliability.</div>
+            </div>
+            
+            <h2>PROJECTS</h2>
+            
+            <div class="project-item">
+                <div class="project-title">WEATHER CHECK</div>
+                <div class="project-tech">Jul 2025 - Present | HTML5, CSS3, JavaScript, REST API, GitHub</div>
+                <div class="project-desc">Built a real-time weather forecasting app using public REST API's with strong error handling and optimized API calls. Implemented geolocation-based weather search with responsive UI and cross-browser compatibility.</div>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">RUMBLE ROULETTE</div>
+                <div class="project-tech">Sep 2025 - Present | React.js, JavaScript, Vercel Live Demo</div>
+                <div class="project-desc">Developed dynamic roulette game with real-time UI updates, animation systems, and state management. Built secure backend logic for game sessions, data validation, and bet handling using Node.js principles.</div>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">EAZY-VEGGIE</div>
+                <div class="project-tech">Jul 2025 | React.js, Tailwind CSS, Appwrite, Chart.js, GitHub</div>
+                <div class="project-desc">Created full-stack vegetable marketplace with product filtering, cart management, and cloud-backed storage via Appwrite. Built analytics dashboard using Chart.js to visualize purchase trends.</div>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">LIVEFIT</div>
+                <div class="project-tech">Sep 2025 - Present | React.js, Node.js, Express.js, MongoDB, GitHub</div>
+                <div class="project-desc">Designed a calorie-tracking platform with AI-based goal suggestions, multi-language UI, and health analytics. Developed secure REST APIs with Express.js, JWT authentication, and optimized MongoDB schemas.</div>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">MY-PORTFOLIO</div>
+                <div class="project-tech">Oct 2025 - Present | React.js, Tailwind CSS, JavaScript, GitHub</div>
+                <div class="project-desc">Built a modern portfolio showcasing professional projects, skills, and achievements with optimized SEO and fast loading. Implemented reusable UI components, smooth animations, and clean SPA architecture.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
