@@ -95,5 +95,8 @@ Step 3 - Deployment
 npm run dev
 ```
 
+<img width="797" height="838" alt="image" src="https://github.com/user-attachments/assets/65cd50b5-a6e7-49a2-baba-8734cb6a49a8" />
 
-<img width="1065" height="965" alt="image" src="https://github.com/user-attachments/assets/563024f5-3d24-402c-b950-536d96101b78" />
+<img width="797" height="852" alt="image" src="https://github.com/user-attachments/assets/5a7d77a6-7228-470f-9c29-38f903b2ff06" />
+<img width="797" height="849" alt="image" src="https://github.com/user-attachments/assets/5627b137-6e6b-4213-9748-233b314b62fb" />
+
