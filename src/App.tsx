@@ -39,11 +39,45 @@ export default function App() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const animationFrameId = useRef<number>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const timerIntervalRef = useRef<NodeJS.Timeout>();
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval>>();
+
+    const generateRandomPath = (size: number): [number, number][] => {
+    const getNeighbors = (row: number, col: number, visited: boolean[][]): [number, number][] => {
+      const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+      return directions
+        .map(([dr, dc]) => [row + dr, col + dc])
+        .filter(([r, c]) => 
+          r >= 0 && r < size && 
+          c >= 0 && c < size && 
+          !visited[r][c]
+        ) as [number, number][];
+    };
+
+    const visited = Array(size).fill(null).map(() => Array(size).fill(false));
+    const path: [number, number][] = [[0, 0]];
+    visited[0][0] = true;
+    
+    // Calculate path length based on grid size (2 * size)
+    const pathLength = 2 * size;
+    
+    while (path.length < pathLength && path.length < size * size) {
+      const [currentRow, currentCol] = path[path.length - 1];
+      const neighbors = getNeighbors(currentRow, currentCol, visited);
+      
+      if (neighbors.length === 0) break;
+      
+      const [nextRow, nextCol] = neighbors[Math.floor(Math.random() * neighbors.length)];
+      path.push([nextRow, nextCol]);
+      visited[nextRow][nextCol] = true;
+    }
+    
+    return path;
+  };
 
   const generateMaze = useCallback((size: number) => {
     const newGrid: Cell[][] = [];
     
+    // Initialize empty grid
     for (let row = 0; row < size; row++) {
       const newRow: Cell[] = [];
       for (let col = 0; col < size; col++) {
@@ -59,20 +93,25 @@ export default function App() {
       newGrid.push(newRow);
     }
 
-    let currentRow = 0;
-    let currentCol = 0;
-    newGrid[0][0] = { ...newGrid[0][0], isPath: true, isStart: true, isPlayer: true };
-
-    const directions = [
-      [0, 1],
-      [1, 0],
-      [0, -1],
-      [-1, 0],
-    ];
+    // Generate random path
+    const path = generateRandomPath(size);
+    
+    // Mark path cells
+    path.forEach(([row, col], index) => {
+      newGrid[row][col].isPath = true;
+      if (index === 0) {
+        newGrid[row][col].isStart = true;
+        newGrid[row][col].isPlayer = true;
+      } else if (index === path.length - 1) {
+        newGrid[row][col].isEnd = true;
+      }
+    });
 
     const targetLength = 6;
     let pathLength = 1;
     const pathHistory: [number, number][] = [[0, 0]];
+    let currentRow = 0;  // Initialize starting row
+    let currentCol = 0;  // Initialize starting column
 
     while (pathLength < targetLength) {
       const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
