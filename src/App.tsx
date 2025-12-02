@@ -37,6 +37,8 @@ export default function App() {
   const [level, setLevel] = useState(1);
   const [score, setScore] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [tracedPath, setTracedPath] = useState<[number, number][]>([]);
+  const [wrongCell, setWrongCell] = useState<[number, number] | null>(null);
   const animationFrameId = useRef<number>();
   const containerRef = useRef<HTMLDivElement>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout>();
@@ -165,6 +167,8 @@ export default function App() {
     setPlayerPos({ row: 0, col: 0 });
     setGameState('memorize');
     setTimeLeft(GAME_TIME / 1000);
+    setTracedPath([[0, 0]]);
+    setWrongCell(null);
     createParticles();
   }, [gridSize, generateMaze, createParticles]);
 
@@ -279,7 +283,8 @@ export default function App() {
 
     // Check if clicked on wrong cell (not a path cell)
     if (!grid[clickedRow]?.[clickedCol]?.isPath) {
-      setGameState('lost');
+      setWrongCell([clickedRow, clickedCol]);
+      setTimeout(() => setGameState('lost'), 500);
       return;
     }
 
@@ -292,7 +297,8 @@ export default function App() {
     const isStart = clickedRow === 0 && clickedCol === 0 && playerPos.row === 0 && playerPos.col === 0;
     
     if (!isAdjacent && !isStart) {
-      setGameState('lost');
+      setWrongCell([clickedRow, clickedCol]);
+      setTimeout(() => setGameState('lost'), 500);
       return;
     }
 
@@ -306,6 +312,7 @@ export default function App() {
       
       newGrid[clickedRow][clickedCol].isPlayer = true;
       setPlayerPos({ row: clickedRow, col: clickedCol });
+      setTracedPath([...tracedPath, [clickedRow, clickedCol]]);
 
       if (newGrid[clickedRow][clickedCol].isEnd) {
         const newScore = score + Math.round(timeLeft * level);
@@ -449,7 +456,13 @@ export default function App() {
                 let bgColor = '#fff';
                 let borderColor = '#e2e8f0';
 
-                if (gameState === 'memorize' && isCellInAnimatedPath(cell.row, cell.col)) {
+                if (wrongCell && wrongCell[0] === cell.row && wrongCell[1] === cell.col) {
+                  bgColor = '#ef4444';
+                  borderColor = '#b91c1c';
+                } else if (tracedPath.some(([r, c]) => r === cell.row && c === cell.col)) {
+                  bgColor = '#10b981';
+                  borderColor = '#047857';
+                } else if (gameState === 'memorize' && isCellInAnimatedPath(cell.row, cell.col)) {
                   bgColor = '#fcd34d';
                   borderColor = '#ca8a04';
                 }
