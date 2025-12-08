@@ -6,6 +6,9 @@ All tiles begin **pure white 🟦➡️⬜**, the path blinks **yellow ⭐🟨**
 One wrong move = instant defeat ❌… but a flawless path unlocks tougher, longer, trickier mazes! 🔓🔥
 
 ---
+# LIVE DEMO
+
+https://memory-maze-psi.vercel.app/
 
 # 🎮 How It Works
 
