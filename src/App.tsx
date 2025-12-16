@@ -41,7 +41,7 @@ export default function App() {
   const [wrongCell, setWrongCell] = useState<[number, number] | null>(null);
   const animationFrameId = useRef<number>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const timerIntervalRef = useRef<NodeJS.Timeout>();
+  const timerIntervalRef = useRef<number>();
 
   const generateMaze = useCallback((size: number) => {
     const newGrid: Cell[][] = [];
@@ -133,16 +133,16 @@ export default function App() {
 
   const createParticles = useCallback(() => {
     const newParticles: Particle[] = [];
-    const colors = ['#4299e1', '#9f7aea', '#f6ad55', '#68d391', '#f6e05e'];
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6ab04c', '#c44569', '#f8b500', '#a29bfe'];
     
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 60; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        size: Math.random() * 5 + 2,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
+        size: Math.random() * 15 + 8,
+        speedX: (Math.random() - 0.5) * 2,
+        speedY: (Math.random() - 0.5) * 2,
         color: colors[Math.floor(Math.random() * colors.length)]
       });
     }
@@ -151,8 +151,8 @@ export default function App() {
   }, []);
 
   const animateParticles = useCallback(() => {
-    setParticles(prevParticles => 
-      prevParticles.map(p => ({
+    setParticles((prevParticles: Particle[]) => 
+      prevParticles.map((p: Particle) => ({
         ...p,
         x: (p.x + p.speedX + window.innerWidth) % window.innerWidth,
         y: (p.y + p.speedY + window.innerHeight) % window.innerHeight
@@ -208,8 +208,8 @@ export default function App() {
 
   useEffect(() => {
     if (gameState === 'solving') {
-      timerIntervalRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
+      timerIntervalRef.current = window.setInterval(() => {
+        setTimeLeft((prev: number) => {
           if (prev <= 1) {
             if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
             setGameState('lost');
@@ -229,7 +229,7 @@ export default function App() {
     if (gameState !== 'memorize' || !isAnimating) return;
 
     const interval = setInterval(() => {
-      setAnimationStep(prev => {
+      setAnimationStep((prev: number) => {
         if (prev >= currentPath.length - 1) {
           clearInterval(interval);
           setIsAnimating(false);
@@ -243,11 +243,20 @@ export default function App() {
   }, [gameState, currentPath, isAnimating]);
 
   const isCellInAnimatedPath = (row: number, col: number) => {
-    return currentPath.slice(0, animationStep + 1).some(([r, c]) => r === row && c === col);
+    return currentPath.slice(0, animationStep + 1).some(([r, c]: [number, number]) => r === row && c === col);
   };
 
   const handleArrowClick = (key: string) => {
-    if (gameState !== 'solving') return;
+    // Strict state check
+    if (gameState !== 'solving') {
+      return;
+    }
+    
+    // Strict key validation
+    const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'];
+    if (!validKeys.includes(key)) {
+      return;
+    }
     
     const directions: { [key: string]: [number, number] } = {
       'ArrowUp': [-1, 0],
@@ -261,19 +270,26 @@ export default function App() {
     };
 
     const direction = directions[key];
-    if (!direction) return;
+    if (!direction) {
+      return;
+    }
 
     const [dr, dc] = direction;
     const newRow = playerPos.row + dr;
     const newCol = playerPos.col + dc;
 
-    if (
+    // Strict boundary and path validation
+    const isValidMove = (
       newRow >= 0 &&
       newRow < gridSize &&
       newCol >= 0 &&
       newCol < gridSize &&
-      grid[newRow]?.[newCol]?.isPath
-    ) {
+      grid[newRow] &&
+      grid[newRow][newCol] &&
+      grid[newRow][newCol].isPath === true
+    );
+
+    if (isValidMove) {
       handleCellClick(newRow, newCol);
     }
   };
@@ -302,8 +318,8 @@ export default function App() {
       return;
     }
 
-    setGrid(currentGrid => {
-      const newGrid = currentGrid.map(row => [...row]);
+    setGrid((currentGrid: Cell[][]) => {
+      const newGrid = currentGrid.map((row: Cell[]) => [...row]);
       
       const { row: currentRow, col: currentCol } = playerPos;
       if (currentRow < newGrid.length && currentCol < newGrid[0].length) {
@@ -332,20 +348,36 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameState !== 'solving') return;
+      // Strict game state check
+      if (gameState !== 'solving') {
+        return;
+      }
+      
+      // Strict key validation
+      const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'];
       const key = e.key;
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(key)) {
+      
+      if (validKeys.includes(key)) {
+        // Prevent default browser behavior (scrolling, etc.)
         e.preventDefault();
+        e.stopPropagation();
+        
+        // Handle the movement
         handleArrowClick(key);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [playerPos, grid, gameState, gridSize]);
+    // Add event listener with strict options
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, { capture: true });
+    };
+  }, [playerPos, grid, gameState, gridSize, handleArrowClick]);
 
   const renderParticles = () => {
-    return particles.map((particle) => (
+    return particles.map((particle: Particle) => (
       <div
         key={particle.id}
         style={{
@@ -357,8 +389,11 @@ export default function App() {
           backgroundColor: particle.color,
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 0,
-          opacity: 0.6,
+          zIndex: 1,
+          opacity: 0.7,
+          boxShadow: `0 0 ${particle.size * 3}px ${particle.color}, 0 0 ${particle.size * 6}px ${particle.color}40, 0 0 ${particle.size * 9}px ${particle.color}20`,
+          filter: 'blur(0.8px)',
+          animation: `float ${8 + particle.id % 7}s ease-in-out infinite`,
         }}
       />
     ));
@@ -366,7 +401,25 @@ export default function App() {
 
   if (gameState === 'won') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div style={{ 
+        minHeight: '100vh', 
+        width: '100vw',
+        background: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe)',
+        backgroundSize: '400% 400%',
+        animation: 'gradientBG 15s ease infinite',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        margin: 0,
+        padding: 0
+      }}>
+        {renderParticles()}
         <div className="bg-white p-8 rounded-lg shadow-lg text-center">
           <h1 className="text-4xl font-bold mb-4 text-green-600">You Won!</h1>
           <p className="text-xl mb-6">Final Score: {score}</p>
@@ -389,7 +442,25 @@ export default function App() {
 
   if (gameState === 'lost') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <div style={{ 
+        minHeight: '100vh', 
+        width: '100vw',
+        background: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe)',
+        backgroundSize: '400% 400%',
+        animation: 'gradientBG 15s ease infinite',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        margin: 0,
+        padding: 0
+      }}>
+        {renderParticles()}
         <div className="bg-white p-8 rounded-lg shadow-lg text-center">
           <h1 className="text-4xl font-bold mb-4 text-red-600">Game Over</h1>
           <p className="text-xl mb-6">Time's up! Your score: {score}</p>
@@ -411,7 +482,22 @@ export default function App() {
   }
 
   return (
-    <div ref={containerRef} style={{ minHeight: '100vh', background: '#1a202c', color: '#fff', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ 
+      minHeight: '100vh', 
+      width: '100vw',
+      background: 'linear-gradient(-45deg, #002fffff, #3b0c69ff, #f093fb, #e05d6fff, #4facfe, #08686dff)',
+      backgroundSize: '400% 400%',
+      animation: 'gradientBG 15s ease infinite',
+      color: '#fff', 
+      overflow: 'hidden',
+      margin: 0,
+      padding: 0,
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0
+    }}>
       {renderParticles()}
       
       <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '60rem', margin: '0 auto', padding: '1rem' }}>
@@ -446,8 +532,8 @@ export default function App() {
               margin: '0 auto 2rem',
             }}
           >
-            {grid.map((row, rowIndex) =>
-              row.map((cell, colIndex) => {
+            {grid.map((row: Cell[], rowIndex: number) =>
+              row.map((cell: Cell, colIndex: number) => {
                 const isCurrentCell = cell.row === playerPos.row && cell.col === playerPos.col;
                 const isAdjacent = (Math.abs(cell.row - playerPos.row) === 1 && cell.col === playerPos.col) ||
                                    (Math.abs(cell.col - playerPos.col) === 1 && cell.row === playerPos.row);
@@ -459,7 +545,7 @@ export default function App() {
                 if (wrongCell && wrongCell[0] === cell.row && wrongCell[1] === cell.col) {
                   bgColor = '#ef4444';
                   borderColor = '#b91c1c';
-                } else if (tracedPath.some(([r, c]) => r === cell.row && c === cell.col)) {
+                } else if (tracedPath.some(([r, c]: [number, number]) => r === cell.row && c === cell.col)) {
                   bgColor = '#10b981';
                   borderColor = '#047857';
                 } else if (gameState === 'memorize' && isCellInAnimatedPath(cell.row, cell.col)) {
@@ -485,11 +571,11 @@ export default function App() {
                       userSelect: 'none',
                       pointerEvents: 'auto',
                     }}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                       if (isClickable) e.currentTarget.style.transform = 'scale(1.05)';
                     }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
+                    onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                      if (isClickable) e.currentTarget.style.transform = 'scale(1)';
                     }}
                   />
                 );
