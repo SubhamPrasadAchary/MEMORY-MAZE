@@ -246,53 +246,6 @@ export default function App() {
     return currentPath.slice(0, animationStep + 1).some(([r, c]: [number, number]) => r === row && c === col);
   };
 
-  const handleArrowClick = (key: string) => {
-    // Strict state check
-    if (gameState !== 'solving') {
-      return;
-    }
-    
-    // Strict key validation
-    const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'];
-    if (!validKeys.includes(key)) {
-      return;
-    }
-    
-    const directions: { [key: string]: [number, number] } = {
-      'ArrowUp': [-1, 0],
-      'ArrowDown': [1, 0],
-      'ArrowLeft': [0, -1],
-      'ArrowRight': [0, 1],
-      'w': [-1, 0],
-      's': [1, 0],
-      'a': [0, -1],
-      'd': [0, 1],
-    };
-
-    const direction = directions[key];
-    if (!direction) {
-      return;
-    }
-
-    const [dr, dc] = direction;
-    const newRow = playerPos.row + dr;
-    const newCol = playerPos.col + dc;
-
-    // Strict boundary and path validation
-    const isValidMove = (
-      newRow >= 0 &&
-      newRow < gridSize &&
-      newCol >= 0 &&
-      newCol < gridSize &&
-      grid[newRow] &&
-      grid[newRow][newCol] &&
-      grid[newRow][newCol].isPath === true
-    );
-
-    if (isValidMove) {
-      handleCellClick(newRow, newCol);
-    }
-  };
 
   const handleCellClick = (clickedRow: number, clickedCol: number) => {
     if (gameState !== 'solving') return;
@@ -346,35 +299,6 @@ export default function App() {
     });
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Strict game state check
-      if (gameState !== 'solving') {
-        return;
-      }
-      
-      // Strict key validation
-      const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'];
-      const key = e.key;
-      
-      if (validKeys.includes(key)) {
-        // Prevent default browser behavior (scrolling, etc.)
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Handle the movement
-        handleArrowClick(key);
-      }
-    };
-
-    // Add event listener with strict options
-    window.addEventListener('keydown', handleKeyDown, { capture: true });
-    
-    // Clean up event listener
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown, { capture: true });
-    };
-  }, [playerPos, grid, gameState, gridSize, handleArrowClick]);
 
   const renderParticles = () => {
     return particles.map((particle: Particle) => (
@@ -595,85 +519,11 @@ export default function App() {
             </div>
           )}
           <p style={{ color: '#ccc' }}>
-            Use ↑ ↓ ← → or W A S D to move
+            Click on adjacent path cells to move
           </p>
         </div>
       </div>
 
-      <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', position: 'relative', zIndex: 10 }}>
-        <div>
-          <button 
-            onClick={() => handleArrowClick('ArrowUp')}
-            style={{
-              width: '4rem',
-              height: '4rem',
-              backgroundColor: '#3b82f6',
-              color: '#fff',
-              borderRadius: '0.5rem',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            ↑
-          </button>
-        </div>
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          <button 
-            onClick={() => handleArrowClick('ArrowLeft')}
-            style={{
-              width: '4rem',
-              height: '4rem',
-              backgroundColor: '#3b82f6',
-              color: '#fff',
-              borderRadius: '0.5rem',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            ←
-          </button>
-          <button 
-            onClick={() => handleArrowClick('ArrowDown')}
-            style={{
-              width: '4rem',
-              height: '4rem',
-              backgroundColor: '#3b82f6',
-              color: '#fff',
-              borderRadius: '0.5rem',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            ↓
-          </button>
-          <button 
-            onClick={() => handleArrowClick('ArrowRight')}
-            style={{
-              width: '4rem',
-              height: '4rem',
-              backgroundColor: '#3b82f6',
-              color: '#fff',
-              borderRadius: '0.5rem',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            →
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
