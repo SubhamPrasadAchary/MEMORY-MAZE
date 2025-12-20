@@ -106,7 +106,7 @@ body {
   @apply text-green-500;
 }
 
-game-message.lose {
+.game-message.lose {
   @apply text-red-500;
 }
 
