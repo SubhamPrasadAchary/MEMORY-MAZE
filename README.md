@@ -31,9 +31,6 @@ This increases difficulty and memory-dependence. 🧩
 Use:
 
 - 🖱️ **Mouse clicks**  
-- ⌨️ **Arrow Keys**  
-- 🆆🅰🆂🅳 **W A S D**
-
 One mis-step = ❌ GAME OVER  
 Perfect run = ⭐ SCORE BOOST + 🔓 NEW LEVELS
 
@@ -97,5 +94,6 @@ Step 3 - Deployment
 ```
 npm run dev
 ```
-<img width="1833" height="963" alt="image" src="https://github.com/user-attachments/assets/d72998ce-0df9-473e-a69f-af721031dc36" />
+
+<img width="1708" height="938" alt="image" src="https://github.com/user-attachments/assets/b6790dc9-f365-49de-866d-5d2f7c9c70a5" />
 
