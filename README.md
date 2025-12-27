@@ -1,6 +1,6 @@
 
 # 🧠 MEMORY-MAZE ⚡
-
+ 
 **Watch a glowing YELLOW blinking path, memorize it… and then trace it tile-by-tile from memory!**  
 All tiles begin **pure white 🟦➡️⬜**, the path blinks **yellow ⭐🟨**, and the game challenges your focus, speed, and memory under pressure! 💥  
 One wrong move = instant defeat ❌… but a flawless path unlocks tougher, longer, trickier mazes! 🔓🔥
