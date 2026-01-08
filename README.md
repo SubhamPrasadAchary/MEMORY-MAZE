@@ -27,7 +27,7 @@ There is **NO red tile**.
 Instead, the **goal tile will briefly glow yellow at the end of the reveal**, so players only know the destination through the blinking path itself.  
 This increases difficulty and memory-dependence. 🧩
 
-### 🚶 **4. Your Turn — Trace From Memory**
+### 🚶 **4. Your Turn — Trace From Memory** 
 Use:
 
 - 🖱️ **Mouse clicks**  
