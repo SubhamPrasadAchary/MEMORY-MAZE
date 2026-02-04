@@ -11,7 +11,7 @@ One wrong move = instant defeat ❌… but a flawless path unlocks tougher, long
 https://memory-maze-psi.vercel.app/
 
 # 🎮 How It Works
-
+ 
 ### 🟦 **1. All Tiles = Default White**
 The entire grid starts as clean **white tiles** ⬜⬜⬜ — no hints, no noise, total focus.
 
